@@ -1,4 +1,4 @@
-package elevator
+package test
 
 import (
 	"day-1/internal/elevator"

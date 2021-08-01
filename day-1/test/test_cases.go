@@ -1,4 +1,4 @@
-package elevator
+package test
 
 var elevatorRunTestCases = []struct {
 	route string
