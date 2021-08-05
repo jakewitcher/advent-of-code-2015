@@ -1,6 +1,7 @@
 package test
 
 import (
+	"day-5/internal/input"
 	"day-5/internal/rules"
 	"day-5/internal/text"
 	"log"
@@ -47,5 +48,29 @@ func TestEvaluateTextDemeanorAllUsingPartTwoRules(t *testing.T) {
 		if niceCount := text.EvaluateDemeanorAll(test.texts, partTwoRules...); niceCount != test.niceCount {
 			log.Fatalf("expected nice count: %d, actual nice count: %d", test.niceCount, niceCount)
 		}
+	}
+}
+
+func BenchmarkEvaluateTextDemeanorAllUsingPartOneRules(b *testing.B) {
+	texts, err := input.Extract("../internal/input/input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		_ = text.EvaluateDemeanorAll(texts, partOneRules...)
+	}
+}
+
+func BenchmarkEvaluateTextDemeanorAllUsingPartTwoRules(b *testing.B) {
+	texts, err := input.Extract("../internal/input/input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		_ = text.EvaluateDemeanorAll(texts, partTwoRules...)
 	}
 }
