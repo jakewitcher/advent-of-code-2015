@@ -14,6 +14,7 @@ func main() {
 	}
 
 	PartOne(texts)
+	PartTwo(texts)
 }
 
 func PartOne(texts []string) {
@@ -23,5 +24,14 @@ func PartOne(texts []string) {
 		rules.HasThreeVowels,
 	}
 	niceCount := text.EvaluateDemeanorAll(texts, partOneRules...)
+	log.Printf("nice count: %d", niceCount)
+}
+
+func PartTwo(texts []string) {
+	partTwoRules := []rules.Rule{
+		rules.HasPairOfLettersAppearingTwice,
+		rules.HasRepeatingLetterWithOneLetterBetween,
+	}
+	niceCount := text.EvaluateDemeanorAll(texts, partTwoRules...)
 	log.Printf("nice count: %d", niceCount)
 }

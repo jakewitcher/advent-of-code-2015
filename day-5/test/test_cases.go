@@ -2,7 +2,7 @@ package test
 
 import "day-5/internal/text"
 
-var singleTextTestCases = []struct {
+var singleTextPartOneRulesTestCases = []struct {
 	text     string
 	demeanor string
 }{
@@ -28,7 +28,7 @@ var singleTextTestCases = []struct {
 	},
 }
 
-var allTextTestCases = []struct {
+var allTextPartOneRulesTestCases = []struct {
 	texts     []string
 	niceCount int
 }{
@@ -39,6 +39,52 @@ var allTextTestCases = []struct {
 			"jchzalrnumimnmhp",
 			"haegwjzuvuyypxyu",
 			"dvszwmarrgswjxmb",
+		},
+		niceCount: 2,
+	},
+}
+
+var singleTextPartTwoRulesTestCases = []struct {
+	text     string
+	demeanor string
+}{
+	{
+		text:     "qjhvhtzxzqqjkmpb",
+		demeanor: text.Nice,
+	},
+	{
+		text:     "xxyxx",
+		demeanor: text.Nice,
+	},
+	{
+		text:     "uurcxstgmygtbstg",
+		demeanor: text.Naughty,
+	},
+	{
+		text:     "ieodomkazucvgmuy",
+		demeanor: text.Naughty,
+	},
+	{
+		text:     "aaaba",
+		demeanor: text.Naughty,
+	},
+	{
+		text:     "sknufchjdvccccta",
+		demeanor: text.Nice,
+	},
+}
+
+var allTextPartTwoRulesTestCases = []struct {
+	texts     []string
+	niceCount int
+}{
+	{
+		texts: []string{
+			"qjhvhtzxzqqjkmpb",
+			"xxyxx",
+			"uurcxstgmygtbstg",
+			"ieodomkazucvgmuy",
+			"aaaba",
 		},
 		niceCount: 2,
 	},

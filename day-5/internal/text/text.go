@@ -2,6 +2,7 @@ package text
 
 import (
 	"day-5/internal/rules"
+	"fmt"
 )
 
 const (
@@ -12,8 +13,9 @@ const (
 func EvaluateDemeanorAll(texts []string, rules ...rules.Rule) int {
 	var niceCount int
 
-	for _, text := range texts {
+	for i, text := range texts {
 		if demeanor := EvaluateDemeanor(text, rules...); demeanor == Nice {
+			fmt.Println(i + 1)
 			niceCount++
 		}
 	}

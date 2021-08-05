@@ -13,17 +13,38 @@ var partOneRules = []rules.Rule{
 	rules.HasThreeVowels,
 }
 
-func TestEvaluateTextDemeanor(t *testing.T) {
-	for _, test := range singleTextTestCases {
+var partTwoRules = []rules.Rule{
+	rules.HasPairOfLettersAppearingTwice,
+	rules.HasRepeatingLetterWithOneLetterBetween,
+}
+
+func TestEvaluateTextDemeanorUsingPartOneRules(t *testing.T) {
+	for _, test := range singleTextPartOneRulesTestCases {
 		if demeanor := text.EvaluateDemeanor(test.text, partOneRules...); demeanor != test.demeanor {
 			log.Fatalf("for text %s expected demeanor: %s, actual demeanor: %s", test.text, test.demeanor, demeanor)
 		}
 	}
 }
 
-func TestEvaluateTextDemeanorAll(t *testing.T) {
-	for _, test := range allTextTestCases {
+func TestEvaluateTextDemeanorAllUsingPartOneRules(t *testing.T) {
+	for _, test := range allTextPartOneRulesTestCases {
 		if niceCount := text.EvaluateDemeanorAll(test.texts, partOneRules...); niceCount != test.niceCount {
+			log.Fatalf("expected nice count: %d, actual nice count: %d", test.niceCount, niceCount)
+		}
+	}
+}
+
+func TestEvaluateTextDemeanorUsingPartTwoRules(t *testing.T) {
+	for _, test := range singleTextPartTwoRulesTestCases {
+		if demeanor := text.EvaluateDemeanor(test.text, partTwoRules...); demeanor != test.demeanor {
+			log.Fatalf("for text %s expected demeanor: %s, actual demeanor: %s", test.text, test.demeanor, demeanor)
+		}
+	}
+}
+
+func TestEvaluateTextDemeanorAllUsingPartTwoRules(t *testing.T) {
+	for _, test := range allTextPartTwoRulesTestCases {
+		if niceCount := text.EvaluateDemeanorAll(test.texts, partTwoRules...); niceCount != test.niceCount {
 			log.Fatalf("expected nice count: %d, actual nice count: %d", test.niceCount, niceCount)
 		}
 	}
