@@ -1,14 +1,4 @@
-package domain
-
-const (
-	turnOn  string = "turn on"
-	turnOff string = "turn off"
-	toggle  string = "toggle"
-)
-
-type Position struct {
-	X, Y int
-}
+package light
 
 type Light interface {
 	Toggle() Light
@@ -17,7 +7,11 @@ type Light interface {
 	Status() int
 }
 
-type LightFactory func(int, int) Light
+type Factory func(int, int) Light
+
+type Position struct {
+	X, Y int
+}
 
 type BinaryLight struct {
 	Position
@@ -69,44 +63,6 @@ func (l BrightnessLight) Status() int {
 	return l.Brightness
 }
 
-type Grid [][]Light
-
-func (g Grid) ApplyDirection(d Direction) {
-	for i := d.Start.X; i <= d.End.X; i++ {
-		for j := d.Start.Y; j <= d.End.Y; j++ {
-			switch d.Action {
-			case turnOn:
-				light := g[i][j]
-				g[i][j] = light.On()
-			case turnOff:
-				light := g[i][j]
-				g[i][j] = light.Off()
-			case toggle:
-				light := g[i][j]
-				g[i][j] = light.Toggle()
-			}
-		}
-	}
-}
-
-func (g Grid) CountLightsOn() int {
-	var lightsOn int
-	for i := 0; i < 1000; i++ {
-		for j := 0; j < 1000; j++ {
-			light := g[i][j]
-			lightsOn += light.Status()
-		}
-	}
-
-	return lightsOn
-}
-
-type Direction struct {
-	Start  Position
-	End    Position
-	Action string
-}
-
 func NewBinaryLight(x, y int) Light {
 	return newBinaryLight(x, y, false)
 }
@@ -127,20 +83,4 @@ func newBrightnessLight(x, y, brightness int) Light {
 		Position: Position{x, y},
 		Brightness: brightness,
 	}
-}
-
-func NewGrid(width, height int, lightFactory LightFactory) Grid {
-	grid := make(Grid, height)
-
-	for i := 0; i < height; i++ {
-		row := make([]Light, width)
-
-		for j := 0; j < width; j++ {
-			row[j] = lightFactory(i, j)
-		}
-
-		grid[i] = row
-	}
-
-	return grid
 }

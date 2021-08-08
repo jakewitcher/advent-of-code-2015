@@ -1,21 +1,27 @@
 package direction
 
 import (
-	"day-6/internal/domain"
+	"day-6/internal/light"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
 const (
-	turnOn  string = "turn on"
-	turnOff string = "turn off"
-	toggle  string = "toggle"
+	TurnOn  string = "turn on"
+	TurnOff string = "turn off"
+	Toggle  string = "toggle"
 )
+
+type Direction struct {
+	Start  light.Position
+	End    light.Position
+	Action string
+}
 
 var regex = regexp.MustCompile("\\d+")
 
-func Parse(direction string) domain.Direction {
+func Parse(direction string) Direction {
 	match := regex.FindAllString(direction, 4)
 	startX, _ := strconv.Atoi(match[0])
 	startY, _ := strconv.Atoi(match[1])
@@ -25,12 +31,12 @@ func Parse(direction string) domain.Direction {
 
 	action := parseAction(direction)
 
-	return domain.Direction{
-		Start: domain.Position{
+	return Direction{
+		Start: light.Position{
 			X: startX,
 			Y: startY,
 		},
-		End: domain.Position{
+		End: light.Position{
 			X: endX,
 			Y: endY,
 		},
@@ -41,12 +47,12 @@ func Parse(direction string) domain.Direction {
 func parseAction(direction string) string {
 	var action string
 
-	if strings.HasPrefix(direction, turnOn) {
-		action = turnOn
-	} else if strings.HasPrefix(direction, turnOff) {
-		action = turnOff
+	if strings.HasPrefix(direction, TurnOn) {
+		action = TurnOn
+	} else if strings.HasPrefix(direction, TurnOff) {
+		action = TurnOff
 	} else {
-		action = toggle
+		action = Toggle
 	}
 
 	return action

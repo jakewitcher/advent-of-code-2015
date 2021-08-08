@@ -1,9 +1,9 @@
 package main
 
 import (
-	"day-6/internal/domain"
+	"day-6/internal/grid"
 	"day-6/internal/input"
-	"day-6/internal/lights"
+	"day-6/internal/light"
 	"log"
 )
 
@@ -18,11 +18,11 @@ func main() {
 }
 
 func PartOne(directions []string) {
-	lightsOn := lights.WithDirections(directions, domain.NewBinaryLight)
-	log.Printf("lights on: %d", lightsOn)
+	lightsOn := grid.LightAccordingToDirections(directions, light.NewBinaryLight)
+	log.Printf("grid on: %d", lightsOn)
 }
 
 func PartTwo(directions []string) {
-	lightsOn := lights.WithDirections(directions, domain.NewBrightnessLight)
-	log.Printf("lights on: %d", lightsOn)
+	lightsOn := grid.LightAccordingToDirections(directions, light.NewBrightnessLight)
+	log.Printf("grid on: %d", lightsOn)
 }
