@@ -1,6 +1,7 @@
 package main
 
 import (
+	"day-6/internal/domain"
 	"day-6/internal/input"
 	"day-6/internal/lights"
 	"log"
@@ -12,6 +13,16 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	lightsOn := lights.WithDirections(directions)
+	PartOne(directions)
+	PartTwo(directions)
+}
+
+func PartOne(directions []string) {
+	lightsOn := lights.WithDirections(directions, domain.NewBinaryLight)
+	log.Printf("lights on: %d", lightsOn)
+}
+
+func PartTwo(directions []string) {
+	lightsOn := lights.WithDirections(directions, domain.NewBrightnessLight)
 	log.Printf("lights on: %d", lightsOn)
 }
