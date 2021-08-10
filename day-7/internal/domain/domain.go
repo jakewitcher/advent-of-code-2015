@@ -2,9 +2,11 @@ package domain
 
 type Identifier string
 
-type Signal int
+type Signal uint16
 
 type Gate string
+
+type Shift int
 
 const (
 	And    Gate = "AND"
@@ -17,14 +19,6 @@ const (
 type Wire struct {
 	Identifier
 	Signal
-}
-
-type SignalCreator interface {
-	Create() Signal
-}
-
-type SignalProvider interface {
-	Provide(Wire, Signal) Wire
 }
 
 func NewWire(identifier Identifier, signal Signal) Wire {

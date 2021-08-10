@@ -32,7 +32,7 @@ var lShiftRShiftTestCases = []struct {
 	inputWire       domain.Wire
 	inputIdentifier domain.Identifier
 	gate            domain.Gate
-	shift           int
+	shift           domain.Shift
 	expectedWire    domain.Wire
 }{
 	{
@@ -54,19 +54,16 @@ var lShiftRShiftTestCases = []struct {
 var notTestCases = []struct {
 	inputWire       domain.Wire
 	inputIdentifier domain.Identifier
-	gate            domain.Gate
 	expectedWire    domain.Wire
 }{
 	{
 		inputWire:       xWire,
 		inputIdentifier: "h",
-		gate:            domain.Not,
 		expectedWire:    domain.NewWire("h", 65412),
 	},
 	{
 		inputWire:       yWire,
 		inputIdentifier: "i",
-		gate:            domain.Not,
 		expectedWire:    domain.NewWire("i", 65079),
 	},
 }
