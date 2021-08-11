@@ -9,7 +9,7 @@ var xWire = wires.NewWire("x", 123)
 var yWire = wires.NewWire("y", 456)
 
 var applyInstructionTestCases = []struct {
-	instruction  instructions.Instruction
+	instruction  instructions.InstructionApplier
 	expectedWire wires.Wire
 }{
 	{
@@ -40,8 +40,14 @@ var applyInstructionTestCases = []struct {
 
 var parseInstructionTestCases = []struct {
 	rawInstruction      string
-	expectedInstruction instructions.Instruction
+	expectedInstruction instructions.InstructionApplier
 }{
+	{
+		rawInstruction: "123 -> a",
+		expectedInstruction: instructions.NewSignalAssignmentInstruction(
+			wires.Signal(123),
+			"a"),
+	},
 	{
 		rawInstruction: "123 AND 456 -> a",
 		expectedInstruction: instructions.NewAndInstruction(

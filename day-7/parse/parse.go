@@ -19,8 +19,8 @@ const (
 
 var regex = regexp.MustCompile("(\\d+|[a-z])")
 
-func All(rawInstructions []string) ([]instructions.Instruction, error) {
-	parsedInstructions := make([]instructions.Instruction, len(rawInstructions))
+func All(rawInstructions []string) ([]instructions.InstructionApplier, error) {
+	parsedInstructions := make([]instructions.InstructionApplier, len(rawInstructions))
 
 	for i, rawInstruction := range rawInstructions {
 		instruction, err := One(rawInstruction)
@@ -34,8 +34,8 @@ func All(rawInstructions []string) ([]instructions.Instruction, error) {
 	return parsedInstructions, nil
 }
 
-func One(rawInstruction string) (instructions.Instruction, error) {
-	var instruction instructions.Instruction
+func One(rawInstruction string) (instructions.InstructionApplier, error) {
+	var instruction instructions.InstructionApplier
 
 	switch {
 	case strings.Contains(rawInstruction, and):
@@ -52,6 +52,9 @@ func One(rawInstruction string) (instructions.Instruction, error) {
 
 	case strings.Contains(rawInstruction, not):
 		instruction = parseNotInstruction(rawInstruction)
+
+	default:
+		instruction = parseSignalAssignmentInstruction(rawInstruction)
 	}
 
 	if instruction == nil {
@@ -61,7 +64,7 @@ func One(rawInstruction string) (instructions.Instruction, error) {
 	return instruction, nil
 }
 
-func parseAndOrInstruction(rawInstruction string) instructions.Instruction {
+func parseAndOrInstruction(rawInstruction string) instructions.InstructionApplier {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
 	left := parseSignalProducer(string(match[0]))
@@ -71,7 +74,7 @@ func parseAndOrInstruction(rawInstruction string) instructions.Instruction {
 	return instructions.NewAndInstruction(left, right, identifier)
 }
 
-func parseOrInstruction(rawInstruction string) instructions.Instruction {
+func parseOrInstruction(rawInstruction string) instructions.InstructionApplier {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
 	left := parseSignalProducer(string(match[0]))
@@ -81,7 +84,7 @@ func parseOrInstruction(rawInstruction string) instructions.Instruction {
 	return instructions.NewOrInstruction(left, right, identifier)
 }
 
-func parseLShiftInstruction(rawInstruction string) instructions.Instruction {
+func parseLShiftInstruction(rawInstruction string) instructions.InstructionApplier {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
 	producer := parseSignalProducer(string(match[0]))
@@ -91,7 +94,7 @@ func parseLShiftInstruction(rawInstruction string) instructions.Instruction {
 	return instructions.NewLShiftInstruction(producer, shift, identifier)
 }
 
-func parseRShiftInstruction(rawInstruction string) instructions.Instruction {
+func parseRShiftInstruction(rawInstruction string) instructions.InstructionApplier {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
 	producer := parseSignalProducer(string(match[0]))
@@ -101,13 +104,22 @@ func parseRShiftInstruction(rawInstruction string) instructions.Instruction {
 	return instructions.NewRShiftInstruction(producer, shift, identifier)
 }
 
-func parseNotInstruction(rawInstruction string) instructions.Instruction {
+func parseNotInstruction(rawInstruction string) instructions.InstructionApplier {
 	match := regex.FindAll([]byte(rawInstruction), 2)
 
 	producer := parseSignalProducer(string(match[0]))
 	identifier := wires.Identifier(match[1])
 
 	return instructions.NewNotInstruction(producer, identifier)
+}
+
+func parseSignalAssignmentInstruction(rawInstruction string) instructions.InstructionApplier {
+	match := regex.FindAll([]byte(rawInstruction), 2)
+
+	producer := parseSignalProducer(string(match[0]))
+	identifier := wires.Identifier(match[1])
+
+	return instructions.NewSignalAssignmentInstruction(producer, identifier)
 }
 
 func parseSignalProducer(rawProducer string) wires.SignalProducer {
