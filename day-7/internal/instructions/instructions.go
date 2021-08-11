@@ -13,13 +13,13 @@ type AndInstruction struct {
 }
 
 func (i AndInstruction) Apply() wires.Wire {
-	return wires.NewWire(i.identifier, i.left.Signal & i.right.Signal)
+	return wires.NewWire(i.identifier, i.left.Signal&i.right.Signal)
 }
 
 func NewAndInstruction(left wires.Wire, right wires.Wire, identifier wires.Identifier) Instruction {
 	return AndInstruction{
-		left: left,
-		right: right,
+		left:       left,
+		right:      right,
 		identifier: identifier,
 	}
 }
@@ -31,13 +31,13 @@ type OrInstruction struct {
 }
 
 func (i OrInstruction) Apply() wires.Wire {
-	return wires.NewWire(i.identifier, i.left.Signal | i.right.Signal)
+	return wires.NewWire(i.identifier, i.left.Signal|i.right.Signal)
 }
 
 func NewOrInstruction(left wires.Wire, right wires.Wire, identifier wires.Identifier) Instruction {
 	return OrInstruction{
-		left: left,
-		right: right,
+		left:       left,
+		right:      right,
 		identifier: identifier,
 	}
 }
@@ -49,13 +49,13 @@ type LShiftInstruction struct {
 }
 
 func (i LShiftInstruction) Apply() wires.Wire {
-	return wires.NewWire(i.identifier, i.wire.Signal << i.shift)
+	return wires.NewWire(i.identifier, i.wire.Signal<<i.shift)
 }
 
 func NewLShiftInstruction(wire wires.Wire, shift wires.Shift, identifier wires.Identifier) Instruction {
 	return LShiftInstruction{
-		wire: wire,
-		shift: shift,
+		wire:       wire,
+		shift:      shift,
 		identifier: identifier,
 	}
 }
@@ -67,13 +67,13 @@ type RShiftInstruction struct {
 }
 
 func (i RShiftInstruction) Apply() wires.Wire {
-	return wires.NewWire(i.identifier, i.wire.Signal >> i.shift)
+	return wires.NewWire(i.identifier, i.wire.Signal>>i.shift)
 }
 
 func NewRShiftInstruction(wire wires.Wire, shift wires.Shift, identifier wires.Identifier) Instruction {
 	return RShiftInstruction{
-		wire: wire,
-		shift: shift,
+		wire:       wire,
+		shift:      shift,
 		identifier: identifier,
 	}
 }
@@ -89,7 +89,7 @@ func (i NotInstruction) Apply() wires.Wire {
 
 func NewNotInstruction(wire wires.Wire, identifier wires.Identifier) Instruction {
 	return NotInstruction{
-		wire: wire,
+		wire:       wire,
 		identifier: identifier,
 	}
 }
