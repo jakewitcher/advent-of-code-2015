@@ -9,7 +9,7 @@ var xWire = wires.NewWire("x", 123)
 var yWire = wires.NewWire("y", 456)
 
 var applyInstructionTestCases = []struct {
-	instruction  instructions.InstructionApplier
+	instruction  instructions.Instruction
 	expectedWire wires.Wire
 }{
 	{
@@ -40,7 +40,7 @@ var applyInstructionTestCases = []struct {
 
 var parseInstructionTestCases = []struct {
 	rawInstruction      string
-	expectedInstruction instructions.InstructionApplier
+	expectedInstruction instructions.Instruction
 }{
 	{
 		rawInstruction: "123 -> a",

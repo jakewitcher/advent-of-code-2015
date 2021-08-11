@@ -2,8 +2,9 @@ package instructions
 
 import "day-7/internal/wires"
 
-type InstructionApplier interface {
+type Instruction interface {
 	Apply() wires.Wire
+	GetIdentifier() wires.Identifier
 }
 
 type SignalAssignmentInstruction struct {
@@ -15,7 +16,11 @@ func (i SignalAssignmentInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.producer.ProduceSignal())
 }
 
-func NewSignalAssignmentInstruction(producer wires.SignalProducer, identifier wires.Identifier) InstructionApplier {
+func (i SignalAssignmentInstruction) GetIdentifier() wires.Identifier {
+	return i.identifier
+}
+
+func NewSignalAssignmentInstruction(producer wires.SignalProducer, identifier wires.Identifier) Instruction {
 	return SignalAssignmentInstruction{
 		producer:   producer,
 		identifier: identifier,
@@ -32,7 +37,11 @@ func (i AndInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.left.ProduceSignal()&i.right.ProduceSignal())
 }
 
-func NewAndInstruction(left wires.SignalProducer, right wires.SignalProducer, identifier wires.Identifier) InstructionApplier {
+func (i AndInstruction) GetIdentifier() wires.Identifier {
+	return i.identifier
+}
+
+func NewAndInstruction(left wires.SignalProducer, right wires.SignalProducer, identifier wires.Identifier) Instruction {
 	return AndInstruction{
 		left:       left,
 		right:      right,
@@ -50,7 +59,11 @@ func (i OrInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.left.ProduceSignal()|i.right.ProduceSignal())
 }
 
-func NewOrInstruction(left wires.SignalProducer, right wires.SignalProducer, identifier wires.Identifier) InstructionApplier {
+func (i OrInstruction) GetIdentifier() wires.Identifier {
+	return i.identifier
+}
+
+func NewOrInstruction(left wires.SignalProducer, right wires.SignalProducer, identifier wires.Identifier) Instruction {
 	return OrInstruction{
 		left:       left,
 		right:      right,
@@ -68,7 +81,11 @@ func (i LShiftInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.producer.ProduceSignal()<<i.shift)
 }
 
-func NewLShiftInstruction(producer wires.SignalProducer, shift wires.Shift, identifier wires.Identifier) InstructionApplier {
+func (i LShiftInstruction) GetIdentifier() wires.Identifier {
+	return i.identifier
+}
+
+func NewLShiftInstruction(producer wires.SignalProducer, shift wires.Shift, identifier wires.Identifier) Instruction {
 	return LShiftInstruction{
 		producer:   producer,
 		shift:      shift,
@@ -86,7 +103,11 @@ func (i RShiftInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.producer.ProduceSignal()>>i.shift)
 }
 
-func NewRShiftInstruction(producer wires.SignalProducer, shift wires.Shift, identifier wires.Identifier) InstructionApplier {
+func (i RShiftInstruction) GetIdentifier() wires.Identifier {
+	return i.identifier
+}
+
+func NewRShiftInstruction(producer wires.SignalProducer, shift wires.Shift, identifier wires.Identifier) Instruction {
 	return RShiftInstruction{
 		producer:   producer,
 		shift:      shift,
@@ -103,7 +124,11 @@ func (i NotInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, ^i.producer.ProduceSignal())
 }
 
-func NewNotInstruction(producer wires.SignalProducer, identifier wires.Identifier) InstructionApplier {
+func (i NotInstruction) GetIdentifier() wires.Identifier {
+	return i.identifier
+}
+
+func NewNotInstruction(producer wires.SignalProducer, identifier wires.Identifier) Instruction {
 	return NotInstruction{
 		producer:   producer,
 		identifier: identifier,

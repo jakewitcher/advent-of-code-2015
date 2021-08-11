@@ -11,4 +11,3 @@ func TestApplyInstruction(t *testing.T) {
 		}
 	}
 }
-
