@@ -64,8 +64,8 @@ func One(rawInstruction string) (instructions.Instruction, error) {
 func parseAndOrInstruction(rawInstruction string) instructions.Instruction {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
-	left := parseWire(string(match[0]))
-	right := parseWire(string(match[1]))
+	left := parseSignalProducer(string(match[0]))
+	right := parseSignalProducer(string(match[1]))
 	identifier := wires.Identifier(match[2])
 
 	return instructions.NewAndInstruction(left, right, identifier)
@@ -74,8 +74,8 @@ func parseAndOrInstruction(rawInstruction string) instructions.Instruction {
 func parseOrInstruction(rawInstruction string) instructions.Instruction {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
-	left := parseWire(string(match[0]))
-	right := parseWire(string(match[1]))
+	left := parseSignalProducer(string(match[0]))
+	right := parseSignalProducer(string(match[1]))
 	identifier := wires.Identifier(match[2])
 
 	return instructions.NewOrInstruction(left, right, identifier)
@@ -84,44 +84,39 @@ func parseOrInstruction(rawInstruction string) instructions.Instruction {
 func parseLShiftInstruction(rawInstruction string) instructions.Instruction {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
-	wire := parseWire(string(match[0]))
+	producer := parseSignalProducer(string(match[0]))
 	shift := parseShift(string(match[1]))
 	identifier := wires.Identifier(match[2])
 
-	return instructions.NewLShiftInstruction(wire, shift, identifier)
+	return instructions.NewLShiftInstruction(producer, shift, identifier)
 }
 
 func parseRShiftInstruction(rawInstruction string) instructions.Instruction {
 	match := regex.FindAll([]byte(rawInstruction), 3)
 
-	wire := parseWire(string(match[0]))
+	producer := parseSignalProducer(string(match[0]))
 	shift := parseShift(string(match[1]))
 	identifier := wires.Identifier(match[2])
 
-	return instructions.NewRShiftInstruction(wire, shift, identifier)
+	return instructions.NewRShiftInstruction(producer, shift, identifier)
 }
 
 func parseNotInstruction(rawInstruction string) instructions.Instruction {
 	match := regex.FindAll([]byte(rawInstruction), 2)
 
-	wire := parseWire(string(match[0]))
+	producer := parseSignalProducer(string(match[0]))
 	identifier := wires.Identifier(match[1])
 
-	return instructions.NewNotInstruction(wire, identifier)
+	return instructions.NewNotInstruction(producer, identifier)
 }
 
-func parseWire(rawWire string) wires.Wire {
-	var identifier wires.Identifier
-	var signal wires.Signal
-
-	maybeSignal, err := strconv.Atoi(rawWire)
+func parseSignalProducer(rawProducer string) wires.SignalProducer {
+	maybeSignal, err := strconv.Atoi(rawProducer)
 	if err != nil {
-		identifier = wires.Identifier(rawWire)
+		return wires.NewWire(wires.Identifier(rawProducer), 0)
 	} else {
-		signal = wires.Signal(maybeSignal)
+		return wires.Signal(maybeSignal)
 	}
-
-	return wires.NewWire(identifier, signal)
 }
 
 func parseShift(rawShift string) wires.Shift {

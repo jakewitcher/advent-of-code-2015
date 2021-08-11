@@ -45,21 +45,21 @@ var parseInstructionTestCases = []struct {
 	{
 		rawInstruction: "123 AND 456 -> a",
 		expectedInstruction: instructions.NewAndInstruction(
-			wires.NewWire("", 123),
-			wires.NewWire("", 456),
+			wires.Signal(123),
+			wires.Signal(456),
 			"a"),
 	},
 	{
 		rawInstruction: "x AND 456 -> a",
 		expectedInstruction: instructions.NewAndInstruction(
 			wires.NewWire("x", 0),
-			wires.NewWire("", 456),
+			wires.Signal(456),
 			"a"),
 	},
 	{
 		rawInstruction: "123 AND y -> a",
 		expectedInstruction: instructions.NewAndInstruction(
-			wires.NewWire("", 123),
+			wires.Signal(123),
 			wires.NewWire("y", 0),
 			"a"),
 	},
@@ -73,7 +73,7 @@ var parseInstructionTestCases = []struct {
 	{
 		rawInstruction: "123 LSHIFT 2 -> c",
 		expectedInstruction: instructions.NewLShiftInstruction(
-			wires.NewWire("", 123),
+			wires.Signal(123),
 			2,
 			"c"),
 	},
