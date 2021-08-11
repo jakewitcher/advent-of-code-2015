@@ -1,34 +1,19 @@
 package wires
 
-import "day-7/internal/domain"
+type Identifier string
 
-func ApplyAndOrSignal(leftWire domain.Wire, rightWire domain.Wire, gate domain.Gate, identifier domain.Identifier) domain.Wire {
-	var newSignal domain.Signal
+type Signal uint16
 
-	switch gate {
-	case domain.And:
-		newSignal = leftWire.Signal & rightWire.Signal
-	case domain.Or:
-		newSignal = leftWire.Signal | rightWire.Signal
-	}
+type Shift int
 
-	return domain.NewWire(identifier, newSignal)
+type Wire struct {
+	Identifier
+	Signal
 }
 
-func ApplyLShiftRShiftSignal(inputWire domain.Wire, gate domain.Gate, shift domain.Shift, identifier domain.Identifier) domain.Wire {
-	var newSignal domain.Signal
-
-	switch gate {
-	case domain.LShift:
-		newSignal = inputWire.Signal << shift
-	case domain.RShift:
-		newSignal = inputWire.Signal >> shift
+func NewWire(identifier Identifier, signal Signal) Wire {
+	return Wire{
+		Identifier: identifier,
+		Signal:     signal,
 	}
-
-	return domain.NewWire(identifier, newSignal)
-}
-
-func ApplyNotSignal(inputWire domain.Wire, identifier domain.Identifier) domain.Wire {
-	newSignal := ^inputWire.Signal
-	return domain.NewWire(identifier, newSignal)
 }
