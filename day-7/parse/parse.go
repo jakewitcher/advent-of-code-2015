@@ -33,7 +33,7 @@ func All(rawInstructions []string) ([]instructions.Instruction, error) {
 	}
 
 	sort.Slice(parsedInstructions, func(i, j int) bool {
-		return parsedInstructions[i].GetIdentifier() < parsedInstructions[j].GetIdentifier()
+		return parsedInstructions[i].Identify() < parsedInstructions[j].Identify()
 	})
 	return parsedInstructions, nil
 }

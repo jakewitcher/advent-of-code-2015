@@ -2,9 +2,17 @@ package instructions
 
 import "day-7/internal/wires"
 
-type Instruction interface {
+type InstructionApplier interface {
 	Apply() wires.Wire
-	GetIdentifier() wires.Identifier
+}
+
+type WireIdentifier interface {
+	Identify() wires.Identifier
+}
+
+type Instruction interface {
+	InstructionApplier
+	WireIdentifier
 }
 
 type SignalAssignmentInstruction struct {
@@ -16,7 +24,7 @@ func (i SignalAssignmentInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.producer.ProduceSignal())
 }
 
-func (i SignalAssignmentInstruction) GetIdentifier() wires.Identifier {
+func (i SignalAssignmentInstruction) Identify() wires.Identifier {
 	return i.identifier
 }
 
@@ -37,7 +45,7 @@ func (i AndInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.left.ProduceSignal()&i.right.ProduceSignal())
 }
 
-func (i AndInstruction) GetIdentifier() wires.Identifier {
+func (i AndInstruction) Identify() wires.Identifier {
 	return i.identifier
 }
 
@@ -59,7 +67,7 @@ func (i OrInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.left.ProduceSignal()|i.right.ProduceSignal())
 }
 
-func (i OrInstruction) GetIdentifier() wires.Identifier {
+func (i OrInstruction) Identify() wires.Identifier {
 	return i.identifier
 }
 
@@ -81,7 +89,7 @@ func (i LShiftInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.producer.ProduceSignal()<<i.shift)
 }
 
-func (i LShiftInstruction) GetIdentifier() wires.Identifier {
+func (i LShiftInstruction) Identify() wires.Identifier {
 	return i.identifier
 }
 
@@ -103,7 +111,7 @@ func (i RShiftInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, i.producer.ProduceSignal()>>i.shift)
 }
 
-func (i RShiftInstruction) GetIdentifier() wires.Identifier {
+func (i RShiftInstruction) Identify() wires.Identifier {
 	return i.identifier
 }
 
@@ -124,7 +132,7 @@ func (i NotInstruction) Apply() wires.Wire {
 	return wires.NewWire(i.identifier, ^i.producer.ProduceSignal())
 }
 
-func (i NotInstruction) GetIdentifier() wires.Identifier {
+func (i NotInstruction) Identify() wires.Identifier {
 	return i.identifier
 }
 
